@@ -7,17 +7,21 @@ package uiproject;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uiproject.Tiket;
 
 /**
  *
  * @author LENOVO
  */
 public class FormTicketDetail extends javax.swing.JFrame {
-
+    
+    private int ticketId;
+    private Tiket tiket;
     /**
      * Creates new form FormTicketDetail
      */
-    public FormTicketDetail() {
+    public FormTicketDetail(Tiket tiket) {
+        this.tiket = tiket;
         initComponents();
         usernameProfile.setText(FormLogin.user);
         

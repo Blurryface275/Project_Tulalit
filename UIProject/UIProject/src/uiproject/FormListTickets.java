@@ -31,7 +31,7 @@ public class FormListTickets extends javax.swing.JFrame {
 
     Socket s;
     ArrayList<Tiket> listTiket = new ArrayList<>();
-
+    private int iterator = 0; //ini buat nandain nomor column yg bakal dikirim
     /**
      * Creates new form FormListTickets
      */
@@ -100,10 +100,27 @@ public class FormListTickets extends javax.swing.JFrame {
     private void tampilkanKeTabel() {
         DefaultTableModel model = (DefaultTableModel) tabelListTiket.getModel();
         model.setRowCount(0); // clear existing rows
-
+        
+         // Siapkan event listener untuk tombol detail
+        TableActionEvent event = new TableActionEvent() {
+        @Override
+        public void onDetail(int row) {
+            System.out.println("onDetail triggered with row: " + row);
+            Tiket tiket = listTiket.get(row); // Kalau mau ambil objek Tiket lengkap
+            FormTicketDetail detail = new FormTicketDetail(); // Lebih bagus pakai objek daripada hanya row
+            detail.setVisible(true);
+        }
+    };
+        
+        // Set renderer dan editor SEKALI SAJA sebelum looping
+         tabelListTiket.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRender());
+            tabelListTiket.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditor(event)); // kirim event di sini
+        
         for (Tiket t : listTiket) {
             String vipDisplay = t.getVipPrice() == 0 ? "-" : String.valueOf(t.getVipPrice()); // biar kalo vipnya ga diisi atau gada, di isi - cuy
-
+            PanelAction panel = new PanelAction();
+            panel.initEvent(event, iterator);
+            
             Object[] row = {
                 t.getTiketCloseDate(),
                 t.getCreatorName(),
@@ -112,7 +129,8 @@ public class FormListTickets extends javax.swing.JFrame {
                 t.getEventDate().toString(),
                 t.getRegPrice(),
                 vipDisplay,
-                t.getStock()
+                t.getStock(),
+                panel
             // setelah stock ini ada kolom untuk detail, yang nantinya terisi dengan button untuk ke form detail
             };
             model.addRow(row);
@@ -255,6 +273,7 @@ public class FormListTickets extends javax.swing.JFrame {
             }
         });
         tabelListTiket.setEnabled(false);
+        tabelListTiket.setRowHeight(40);
         tabelListTiket.setShowGrid(true);
         jScrollPane1.setViewportView(tabelListTiket);
 
