@@ -16,29 +16,25 @@ import uiproject.Tiket;
 public class FormTicketDetail extends javax.swing.JFrame {
     
     private int ticketId;
-    private Tiket tiket;
+    
     /**
      * Creates new form FormTicketDetail
      */
-    public FormTicketDetail(Tiket tiket) {
-        this.tiket = tiket;
+    public FormTicketDetail(String closeDate, String eventCreator, String eventName, String location, String regPrice, String vipPrice, String stock) {
+        
         initComponents();
         String tipeDipilih = comboBoxTipe.getSelectedItem().toString();
 
         usernameProfile.setText(FormLogin.user);
+        labelCreator.setText(eventCreator); //buat namain creatornya
+        labelEventName.setText(eventName); //buat nama event
+        labelEventLocation.setText(location); //buat event location
+        labelEventTime.setText(closeDate);
+        labelStock.setText(stock);
+        labelSubtotal.setText(regPrice);
         
-        labelEventName.setText(tiket.getEventName());
-        labelCreator.setText(tiket.getCreatorName());
-        labelEventLocation.setText(tiket.getLocation());
-        labelEventDate.setText(tiket.getEventDate().toString());
-        if (tipeDipilih.equals("Regular")){
-            labelSubtotal.setText("Rp " + tiket.getRegPrice());
-        }
-        else if (tipeDipilih.equals("VIP"))
-        {
-            labelSubtotal.setText("Rp " + tiket.getVipPrice());
-        }
-        labelStock.setText(String.valueOf(tiket.getStock()));
+        
+        
 
         
     }

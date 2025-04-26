@@ -109,8 +109,20 @@ public class FormListTickets extends javax.swing.JFrame {
         public void onDetail(int row) {
             try{
                 System.out.println("onDetail triggered with row: " + row);
+                // Ambil data dari tabel
+                String closeDate = tabelListTiket.getValueAt(row, 0).toString();
+                String eventCreator = tabelListTiket.getValueAt(row, 1).toString();
+                String eventName = tabelListTiket.getValueAt(row, 2).toString();
+                String location = tabelListTiket.getValueAt(row, 3).toString();
+                String regPrice =  tabelListTiket.getValueAt(row, 5).toString();
+                String vipPrice = tabelListTiket.getValueAt(row, 6).toString();
+                String stock = tabelListTiket.getValueAt(row, 7).toString();
+                // Buat dan tampilkan form detail
+                FormTicketDetail detailForm = new FormTicketDetail(closeDate, eventCreator, eventName, location, regPrice, vipPrice, stock);
+                detailForm.setVisible(true);
+                detailForm.setLocationRelativeTo(null); // agar form muncul di tengah
                 Tiket tiket = listTiket.get(row); // Kalau mau ambil objek Tiket lengkap
-                new FormTicketDetail(tiket).setVisible(true); // Kirim ke form
+                new FormTicketDetail(closeDate, eventCreator, eventName, location, regPrice, vipPrice, stock).setVisible(true); // Kirim ke form
                 System.out.println("Tiket : " + tiket.getEventName());
             }
             catch (Exception e){
