@@ -57,9 +57,14 @@ public class FormListTickets extends javax.swing.JFrame {
                 FormTicketDetail detailForm = new FormTicketDetail(closeDate, eventCreator, eventName, location, regPrice, vipPrice, stock);
                 detailForm.setVisible(true);
                 detailForm.setLocationRelativeTo(null); // agar form muncul di tengah
-                Tiket tiket = listTiket.get(row); // Kalau mau ambil objek Tiket lengkap
-                new FormTicketDetail(closeDate, eventCreator, eventName, location, regPrice, vipPrice, stock).setVisible(true); // Kirim ke form
-                System.out.println("Tiket : " + tiket.getEventName());
+                
+                // Ini kalau kamu cuma mau cek nama event
+        if (listTiket != null && row < listTiket.size()) {
+            Tiket tiket = listTiket.get(row);
+            System.out.println("Tiket : " + tiket.getEventName());
+        } else {
+            System.out.println("Tiket list kosong atau index tidak valid!");
+        }
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -68,7 +73,7 @@ public class FormListTickets extends javax.swing.JFrame {
         }
     };
              // Set renderer dan editor SEKALI SAJA sebelum looping
-         tabelListTiket.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRender());
+            tabelListTiket.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRender());
             tabelListTiket.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditor(event)); // kirim event di sini
             usernameProfile1.setText(FormLogin.user);
             s = new Socket("localhost", 6000);
@@ -210,7 +215,7 @@ public class FormListTickets extends javax.swing.JFrame {
         jLabel4.setText("WATCHIFY");
 
         btnSearch.setText("search");
-        btnSearch.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnSearch.setBorder(javax.swing.BorderFactory.createBevelBorder(null));
         btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         btnEvents.setBackground(new java.awt.Color(153, 0, 51));
@@ -310,8 +315,13 @@ public class FormListTickets extends javax.swing.JFrame {
         jLabel5.setText("WATCHIFY");
 
         btnSearch1.setText("search");
-        btnSearch1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnSearch1.setBorder(javax.swing.BorderFactory.createBevelBorder(null));
         btnSearch1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnSearch1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearch1ActionPerformed(evt);
+            }
+        });
 
         btnEvents3.setBackground(new java.awt.Color(160, 89, 104));
         btnEvents3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -522,6 +532,10 @@ public class FormListTickets extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnSearch1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearch1ActionPerformed
 
     /**
      * @param args the command line arguments
