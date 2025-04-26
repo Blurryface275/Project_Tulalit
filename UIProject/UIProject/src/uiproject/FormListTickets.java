@@ -40,6 +40,36 @@ public class FormListTickets extends javax.swing.JFrame {
     public FormListTickets() throws IOException {
         try {
             initComponents();
+             TableActionEvent event = new TableActionEvent() {
+        @Override
+        public void onDetail(int row) {
+            try{
+                System.out.println("onDetail triggered with row: " + row);
+                // Ambil data dari tabel
+                String closeDate = tabelListTiket.getValueAt(row, 0).toString();
+                String eventCreator = tabelListTiket.getValueAt(row, 1).toString();
+                String eventName = tabelListTiket.getValueAt(row, 2).toString();
+                String location = tabelListTiket.getValueAt(row, 3).toString();
+                String regPrice =  tabelListTiket.getValueAt(row, 5).toString();
+                String vipPrice = tabelListTiket.getValueAt(row, 6).toString();
+                String stock = tabelListTiket.getValueAt(row, 7).toString();
+                // Buat dan tampilkan form detail
+                FormTicketDetail detailForm = new FormTicketDetail(closeDate, eventCreator, eventName, location, regPrice, vipPrice, stock);
+                detailForm.setVisible(true);
+                detailForm.setLocationRelativeTo(null); // agar form muncul di tengah
+                Tiket tiket = listTiket.get(row); // Kalau mau ambil objek Tiket lengkap
+                new FormTicketDetail(closeDate, eventCreator, eventName, location, regPrice, vipPrice, stock).setVisible(true); // Kirim ke form
+                System.out.println("Tiket : " + tiket.getEventName());
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            
+        }
+    };
+             // Set renderer dan editor SEKALI SAJA sebelum looping
+         tabelListTiket.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRender());
+            tabelListTiket.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditor(event)); // kirim event di sini
             usernameProfile1.setText(FormLogin.user);
             s = new Socket("localhost", 6000);
 
@@ -104,42 +134,12 @@ public class FormListTickets extends javax.swing.JFrame {
         model.setRowCount(0); // clear existing rows
         
          // Siapkan event listener untuk tombol detail
-        TableActionEvent event = new TableActionEvent() {
-        @Override
-        public void onDetail(int row) {
-            try{
-                System.out.println("onDetail triggered with row: " + row);
-                // Ambil data dari tabel
-                String closeDate = tabelListTiket.getValueAt(row, 0).toString();
-                String eventCreator = tabelListTiket.getValueAt(row, 1).toString();
-                String eventName = tabelListTiket.getValueAt(row, 2).toString();
-                String location = tabelListTiket.getValueAt(row, 3).toString();
-                String regPrice =  tabelListTiket.getValueAt(row, 5).toString();
-                String vipPrice = tabelListTiket.getValueAt(row, 6).toString();
-                String stock = tabelListTiket.getValueAt(row, 7).toString();
-                // Buat dan tampilkan form detail
-                FormTicketDetail detailForm = new FormTicketDetail(closeDate, eventCreator, eventName, location, regPrice, vipPrice, stock);
-                detailForm.setVisible(true);
-                detailForm.setLocationRelativeTo(null); // agar form muncul di tengah
-                Tiket tiket = listTiket.get(row); // Kalau mau ambil objek Tiket lengkap
-                new FormTicketDetail(closeDate, eventCreator, eventName, location, regPrice, vipPrice, stock).setVisible(true); // Kirim ke form
-                System.out.println("Tiket : " + tiket.getEventName());
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-            
-        }
-    };
+       
         
-        // Set renderer dan editor SEKALI SAJA sebelum looping
-         tabelListTiket.getColumnModel().getColumn(8).setCellRenderer(new TableActionCellRender());
-            tabelListTiket.getColumnModel().getColumn(8).setCellEditor(new TableActionCellEditor(event)); // kirim event di sini
+        
         
         for (Tiket t : listTiket) {
             String vipDisplay = t.getVipPrice() == 0 ? "-" : String.valueOf(t.getVipPrice()); // biar kalo vipnya ga diisi atau gada, di isi - cuy
-            PanelAction panel = new PanelAction();            
-            panel.initEvent(event, iterator);
             
             
             Object[] row = {
@@ -151,7 +151,7 @@ public class FormListTickets extends javax.swing.JFrame {
                 t.getRegPrice(),
                 vipDisplay,
                 t.getStock(),
-                panel //ini dia manggil panelaction
+                "detail" //ini dia manggil panelaction
             // setelah stock ini ada kolom untuk detail, yang nantinya terisi dengan button untuk ke form detail
             };
             model.addRow(row);
