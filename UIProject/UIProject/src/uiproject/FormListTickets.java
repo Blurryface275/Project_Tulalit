@@ -4,6 +4,8 @@
  */
 package uiproject;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -105,10 +107,16 @@ public class FormListTickets extends javax.swing.JFrame {
         TableActionEvent event = new TableActionEvent() {
         @Override
         public void onDetail(int row) {
-            System.out.println("onDetail triggered with row: " + row);
-            Tiket tiket = listTiket.get(row); // Kalau mau ambil objek Tiket lengkap
-            FormTicketDetail detail = new FormTicketDetail(); // Lebih bagus pakai objek daripada hanya row
-            detail.setVisible(true);
+            try{
+                System.out.println("onDetail triggered with row: " + row);
+                Tiket tiket = listTiket.get(row); // Kalau mau ambil objek Tiket lengkap
+                new FormTicketDetail(tiket).setVisible(true); // Kirim ke form
+                System.out.println("Tiket : " + tiket.getEventName());
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            
         }
     };
         
@@ -118,8 +126,9 @@ public class FormListTickets extends javax.swing.JFrame {
         
         for (Tiket t : listTiket) {
             String vipDisplay = t.getVipPrice() == 0 ? "-" : String.valueOf(t.getVipPrice()); // biar kalo vipnya ga diisi atau gada, di isi - cuy
-            PanelAction panel = new PanelAction();
+            PanelAction panel = new PanelAction();            
             panel.initEvent(event, iterator);
+            
             
             Object[] row = {
                 t.getTiketCloseDate(),
@@ -130,11 +139,16 @@ public class FormListTickets extends javax.swing.JFrame {
                 t.getRegPrice(),
                 vipDisplay,
                 t.getStock(),
-                panel
+                panel //ini dia manggil panelaction
             // setelah stock ini ada kolom untuk detail, yang nantinya terisi dengan button untuk ke form detail
             };
             model.addRow(row);
+            
+           
+           
         }
+        
+    
 
     }
 

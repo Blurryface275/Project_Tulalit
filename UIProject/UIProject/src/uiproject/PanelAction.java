@@ -21,6 +21,9 @@ public class PanelAction extends javax.swing.JPanel {
     }
     
     public void initEvent(TableActionEvent event, int row) {
+        for (ActionListener al : btnDetail.getActionListeners()) {
+        btnDetail.removeActionListener(al);
+    }
     btnDetail.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -67,6 +70,7 @@ public class PanelAction extends javax.swing.JPanel {
 
     private void btnDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailActionPerformed
         // TODO add your handling code here:
+        System.out.println("Button detail dipencet");
     }//GEN-LAST:event_btnDetailActionPerformed
 
 
@@ -74,4 +78,6 @@ public class PanelAction extends javax.swing.JPanel {
     private javax.swing.JButton btnDetail;
     private javax.swing.ButtonGroup buttonGroup1;
     // End of variables declaration//GEN-END:variables
+
+    
 }

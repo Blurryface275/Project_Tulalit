@@ -23,7 +23,23 @@ public class FormTicketDetail extends javax.swing.JFrame {
     public FormTicketDetail(Tiket tiket) {
         this.tiket = tiket;
         initComponents();
+        String tipeDipilih = comboBoxTipe.getSelectedItem().toString();
+
         usernameProfile.setText(FormLogin.user);
+        
+        labelEventName.setText(tiket.getEventName());
+        labelCreator.setText(tiket.getCreatorName());
+        labelEventLocation.setText(tiket.getLocation());
+        labelEventDate.setText(tiket.getEventDate().toString());
+        if (tipeDipilih.equals("Regular")){
+            labelSubtotal.setText("Rp " + tiket.getRegPrice());
+        }
+        else if (tipeDipilih.equals("VIP"))
+        {
+            labelSubtotal.setText("Rp " + tiket.getVipPrice());
+        }
+        labelStock.setText(String.valueOf(tiket.getStock()));
+
         
     }
 
@@ -492,11 +508,11 @@ public class FormTicketDetail extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormTicketDetail().setVisible(true);
-            }
-        });
+        //java.awt.EventQueue.invokeLater(new Runnable() {
+        //    public void run() {
+         //       new FormTicketDetail().setVisible(true);
+         //   }
+        //});
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
